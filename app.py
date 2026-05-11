@@ -2,15 +2,12 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import numpy as np
 import joblib
-import tensorflow as tf
-import os
 
 app = FastAPI(title="Bank Churn Prediction API")
 
 # Load model and scaler
-model = tf.keras.models.load_model("models/bank_churn_model.keras")
+model = joblib.load("models/bank_churn_mlp.pkl")
 scaler = joblib.load("models/bank_churn_scaler.pkl")
-feature_names = joblib.load("models/bank_churn_features.pkl")
 
 class CustomerData(BaseModel):
     CreditScore: float
@@ -39,10 +36,10 @@ def predict(data: CustomerData):
             data.Geography_Spain, data.Gender_Male
         ]])
         input_scaled = scaler.transform(input_array)
-        probability = model.predict(input_scaled)[0][0]
-        prediction = int(probability > 0.5)
+        prediction = model.predict(input_scaled)[0]
+        probability = model.predict_proba(input_scaled)[0][1]
         return {
-            "prediction": prediction,
+            "prediction": int(prediction),
             "result": "Customer will Churn ⚠️" if prediction == 1 else "Customer will Stay ✅",
             "churn_probability": round(float(probability) * 100, 2)
         }
