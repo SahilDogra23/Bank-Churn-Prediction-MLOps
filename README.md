@@ -76,6 +76,20 @@ uvicorn app:app --reload
 ```bash
 streamlit run streamlit_app.py
 ```
+## 🐳 Docker Deployment
+
+### Run complete app with Docker Compose
+```bash
+docker-compose up
+```
+- API runs at `http://127.0.0.1:8002/docs`
+- Frontend runs at `http://127.0.0.1:8503`
+
+### Pull from Docker Hub
+```bash
+docker pull sahil2323dogra/bank-churn-api:v1
+docker run -p 8000:8000 sahil2323dogra/bank-churn-api:v1
+```
 
 ## 📁 Project Structure
 
