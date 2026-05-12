@@ -45,7 +45,7 @@ if st.button("🔍 Predict Churn", use_container_width=True, type="primary"):
     }
 
     try:
-        response = requests.post("http://127.0.0.1:8002/predict", json=payload)
+        response = requests.post("https://bank-churn-predictions-mlops.onrender.com/predict", json=payload) 
         result = response.json()
 
         if result["prediction"] == 1:
